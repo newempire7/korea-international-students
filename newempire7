@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>韩国留学生来源国分布（2021年）</title>
+
+  <!-- Plotly 최신 버전 -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+  <!-- 스타일 -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin: 20px 0;
+    }
+    #chart {
+      width: 90%;
+      max-width: 1000px;
+      height: 600px;
+      margin: 0 auto;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>韩国留学生来源国分布（2021年）</h1>
+  <p>鼠标悬停在图表上可查看具体人数</p>
+
+  <!-- 차트 영역 -->
+  <div id="chart"></div>
+
+  <!-- Plotly 그래프 -->
+  <script>
+    Plotly.newPlot("chart", [{
+      type: "bar",
+      x: ["China","Vietnam","Uzbekistan","USA","Japan","Russia","Kazakhstan","Nigeria","India","Indonesia"],
+      y: [60087,43361,12000,5000,4000,3000,2500,2000,1800,1500],
+      hovertemplate: "来源国=%{x}<br>留学生人数=%{y}<extra></extra>",
+      marker: {color: "steelblue"}
+    }], {
+      title: "韩国留学生来源国分布（2021年）",
+      xaxis: { title: "来源国" },
+      yaxis: { title: "留学生人数" }
+    }, {responsive: true});
+  </script>
+
+  <footer>
+    <p>作业制作：你的名字</p>
+  </footer>
+</body>
+</html>
