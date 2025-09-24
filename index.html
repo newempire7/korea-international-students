@@ -1,154 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>韩国留学生来源国分布（2021年）</title>
-
-  <!-- Plotly -->
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
-  <!-- D3.js -->
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      background: #111;
-      color: white;
-    }
-    h1 {
-      margin: 20px 0;
-      color: white;
-    }
-    #barChart {
-      width: 90%;
-      max-width: 1000px;
-      height: 500px;
-      margin: 0 auto;
-      background: white;
-    }
-    #networkGraph {
-      width: 100%;
-      height: 600px;
-    }
-    footer {
-      margin: 30px 0;
-      font-size: 14px;
-      color: gray;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韩国留学生来源国分布</title>
 </head>
 <body>
-  <h1>韩国留学生来源国分布（2021年）</h1>
-  <p style="color:lightgray;">鼠标悬停在图表上可查看具体人数</p>
+    <h1>韩国留学生来源国分布（2021年）</h1>
+    <p>下面是交互式图表（可鼠标悬停查看具体人数）：</p>
 
-  <!-- 막대그래프 -->
-  <div id="barChart"></div>
+    <!-- 用 iframe 嵌入交互式图表 -->
+    <iframe src="korea_international_students_chart.html" 
+            width="100%" height="600" style="border:none;"></iframe>
 
-  <!-- 네트워크 그래프 -->
-  <h2>留学生来源国网络图</h2>
-  <svg id="networkGraph"></svg>
-
-  <footer>
+    <hr>
     <p>作业制作：你的名字</p>
-  </footer>
-
-  <script>
-    // --------------------
-    // Plotly 막대그래프
-    // --------------------
-    Plotly.newPlot("barChart", [{
-      type: "bar",
-      x: ["China","Vietnam","Uzbekistan","USA","Japan","Russia","Kazakhstan","Nigeria","India","Indonesia"],
-      y: [60087,43361,12000,5000,4000,3000,2500,2000,1800,1500],
-      hovertemplate: "来源国=%{x}<br>留学生人数=%{y}<extra></extra>",
-      marker: {color: "steelblue"}
-    }], {
-      title: "韩国留学生来源国分布（2021年）",
-      xaxis: { title: "来源国" },
-      yaxis: { title: "留学生人数" }
-    }, {responsive: true});
-
-    // --------------------
-    // D3.js 네트워크 그래프
-    // --------------------
-    const nodes = [
-      {id: "KOR", group: 1},
-      {id: "China", group: 2},
-      {id: "Vietnam", group: 2},
-      {id: "Uzbekistan", group: 2},
-      {id: "USA", group: 2},
-      {id: "Japan", group: 2},
-      {id: "Russia", group: 2},
-      {id: "Kazakhstan", group: 2},
-      {id: "Nigeria", group: 2},
-      {id: "India", group: 2},
-      {id: "Indonesia", group: 2}
-    ];
-
-    const links = nodes.filter(d => d.id !== "KOR")
-      .map(d => ({source: "KOR", target: d.id}));
-
-    const svg = d3.select("#networkGraph")
-      .attr("width", window.innerWidth)
-      .attr("height", 600);
-
-    const simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-      .force("charge", d3.forceManyBody().strength(-400))
-      .force("center", d3.forceCenter(window.innerWidth / 2, 300));
-
-    const link = svg.append("g")
-      .attr("stroke", "gray")
-      .selectAll("line")
-      .data(links)
-      .enter().append("line")
-      .attr("stroke-width", 2);
-
-    const node = svg.append("g")
-      .selectAll("circle")
-      .data(nodes)
-      .enter().append("circle")
-      .attr("r", 20)
-      .attr("fill", d => d.id === "KOR" ? "red" : "skyblue")
-      .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
-
-    const label = svg.append("g")
-      .selectAll("text")
-      .data(nodes)
-      .enter().append("text")
-      .attr("fill", "white")
-      .attr("dy", 4)
-      .attr("text-anchor", "middle")
-      .text(d => d.id);
-
-    simulation.on("tick", () => {
-      link.attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
-
-      node.attr("cx", d => d.x).attr("cy", d => d.y);
-      label.attr("x", d => d.x).attr("y", d => d.y);
-    });
-
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x; d.fy = d.y;
-    }
-    function dragged(event, d) {
-      d.fx = event.x; d.fy = event.y;
-    }
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null; d.fy = null;
-    }
-  </script>
 </body>
 </html>
